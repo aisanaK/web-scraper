@@ -1,5 +1,6 @@
 import csv
 
+import ipdb
 import requests
 from bs4 import BeautifulSoup
 
@@ -17,20 +18,23 @@ def main():
         csv_writer = csv.writer(csv_file)
 
         if page_number == 1:
-            csv_writer.writerow(['title', 'price', 'stock'])
+            csv_writer.writerow(['title', 'price', 'stock', 'link'])
 
         books = soup.find_all(class_="product_pod")
 
-        page_number = soup.find('li', class_='next').a
-        print(page_number)
+        for book in books:
+            title = book.find("h3").a.get('title')
+            price = book.find('div', class_='product_price').p.text
+            link = 'https://books.toscrape.com/catalogue/' + book.find('a').get('href')
 
-        for i in books:
-            title = i.find("h3").a.get('title')
-            price = i.find('div', class_='product_price').p.text
-            in_stock = i.find(class_='instock availability').text.strip()
-            book = {"title": title, "price": price, "stock": in_stock}
+            # TODO: scrape each book
+            # example
+            # source = requests.get(link).text
+
+            in_stock = book.find(class_='instock availability').text.strip()
+            book = {"title": title, "price": price, "stock": in_stock, 'link': link}
             print(book)
-            csv_writer.writerow([title, price, in_stock])
+            csv_writer.writerow([title, price, in_stock, link])
 
         csv_file.close()
 

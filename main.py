@@ -15,7 +15,10 @@ def main():
         # csv file
         csv_file = open("books_toscrape.csv", "a")
         csv_writer = csv.writer(csv_file)
-        csv_writer.writerow(['title', 'price', 'stock'])
+
+        if page_number == 1:
+            csv_writer.writerow(['title', 'price', 'stock'])
+
         books = soup.find_all(class_="product_pod")
 
         page_number = soup.find('li', class_='next').a

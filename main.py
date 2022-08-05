@@ -56,9 +56,6 @@ def main():
         print('Maximum price is', max_price)
         print('Minimum price is', min_price)
     csv_file.close()
-    
-
-print(max_price)
 
 if __name__ == "__main__":
     main()
